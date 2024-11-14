@@ -1,18 +1,92 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
+import {  createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch()
+
+  const navigate = useNavigate()
 
   const [isSignedIn, setIsSignedIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null)
+
   const handleButtonClick = () => {
+    // Use a default value for `name.current` if it's null
+    const emailValue = email.current ? email.current.value : "";
+    const passwordValue = password.current ? password.current.value : "";
+    
+    const nameValue = name.current ? name.current.value : "";
+    
+
     //Validate the form data
-    const message = checkValidData(email.current.value, password.current.value,name.current.value);
+    let message;
+    if (isSignedIn) {
+      // Sign In validation: only validate email and password
+      message = checkValidData(emailValue, passwordValue);
+    } else {
+      // Sign Up validation: validate email, password, and name
+      message = checkValidData(emailValue, passwordValue, nameValue);
+    }
+  
     setErrorMessage(message);
+    if(message) return 
+    //SignIn / SignUp Logic 
+    if(!isSignedIn){
+      //SignUp Logic
+
+      createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log(user)
+    updateProfile(user, {
+      displayName:nameValue , photoURL: "https://avatars.githubusercontent.com/u/147264428?v=4&size=64"
+    }).then(() => {
+      const {uid,email,displayName,photoURL} = auth.currentUser;
+      dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}))
+      navigate("/browse")
+      // Profile updated!
+      // ...
+    }).catch((error) => {
+      // An error occurred
+      setErrorMessage(error.message)
+    });
+    
+    
+    
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrorMessage(errorCode + "-" + errorMessage)
+    
+  });
+    }
+    else{
+      //SignIn Logic
+
+      signInWithEmailAndPassword(auth, emailValue, passwordValue)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user)
+    navigate("/browse")
+   
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrorMessage(errorCode+"-"+errorMessage)
+  });
+    }
   };
   const toggleSignInForm = () => {
     setIsSignedIn(!isSignedIn);
