@@ -3,14 +3,15 @@ import Header from "./Header";
 import { checkValidData } from "../utils/validate";
 import {  createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { BG_URL, PHOTO_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const dispatch = useDispatch()
 
-  const navigate = useNavigate()
+
 
   const [isSignedIn, setIsSignedIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -48,11 +49,11 @@ const Login = () => {
     const user = userCredential.user;
     console.log(user)
     updateProfile(user, {
-      displayName:nameValue , photoURL: "https://avatars.githubusercontent.com/u/147264428?v=4&size=64"
+      displayName:nameValue , photoURL: PHOTO_AVATAR
     }).then(() => {
       const {uid,email,displayName,photoURL} = auth.currentUser;
       dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}))
-      navigate("/browse")
+     
       // Profile updated!
       // ...
     }).catch((error) => {
@@ -78,7 +79,7 @@ const Login = () => {
     // Signed in 
     const user = userCredential.user;
     console.log(user)
-    navigate("/browse")
+   
    
   })
   .catch((error) => {
@@ -96,7 +97,7 @@ const Login = () => {
       <Header />
       <div className="absolute">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/dae1f45f-c2c5-4a62-8d58-6e1b0c6b2d8e/b3a0c5b0-403e-4562-b01f-9d8a0c399942/NP-en-20240827-TRIFECTA-perspective_WEB_3035350d-5154-4510-a5f5-82bea690bfa0_large.jpg"
+          src={BG_URL}
           alt=""
         />
       </div>

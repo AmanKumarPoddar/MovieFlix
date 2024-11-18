@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+    html, body {
+      scrollbar-width: none; /* For Firefox */
+      -ms-overflow-style: none; /* For IE and Edge */
+      overflow-y: scroll; /* Ensure scrolling works */
+    }
+  
+    html::-webkit-scrollbar, 
+    body::-webkit-scrollbar {
+      display: none; /* For Chrome, Safari, and Edge */
+    }
+  }
