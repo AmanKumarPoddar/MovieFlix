@@ -1,26 +1,29 @@
-import React from 'react'
+import React from "react";
 
-import {  useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 
+import useMovieTrailer from "../hooks/useMovieTrailer";
 
-import useMovieTrailer from '../hooks/useMovieTrailer'
+const VideoBackground = ({ movieId }) => {
+  const trailerVideo = useSelector((store) => store.movies?.trailerVideo);
+  useMovieTrailer(movieId);
 
-const VideoBackground = ({movieId}) => {
+  // Render fallback or loading UI if trailerVideo is null
+  if (!trailerVideo || !trailerVideo.key) {
+    return <div>Loading trailer...</div>;
+  }
 
-   const trailerVideo = useSelector(store => store.movies?.trailerVideo);
-   useMovieTrailer(movieId)
-
-    // Render fallback or loading UI if trailerVideo is null
-    if (!trailerVideo || !trailerVideo.key) {
-        return <div>Loading trailer...</div>;
-    }
-    
-    
   return (
-    <div >
-        <iframe className='w-full aspect-video' src={`https://www.youtube.com/embed/${trailerVideo.key}?si=GC6RGO30e4mk-RF8?&autoplay=1&mute=1`} title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" ></iframe>
+    <div>
+      <iframe
+        className="w-full aspect-video"
+        src={`https://www.youtube.com/embed/${trailerVideo.key}?si=GC6RGO30e4mk-RF8?&autoplay=1&mute=1`}
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+      ></iframe>
     </div>
-  )
-}
+  );
+};
 
-export default VideoBackground
+export default VideoBackground;

@@ -14,10 +14,10 @@ const firebaseConfig = {
   storageBucket: "movieflix-428c8.firebasestorage.app",
   messagingSenderId: "104740013884",
   appId: "1:104740013884:web:8c8d4a5cf51409606f8039",
-  measurementId: "G-3YECXTSHJW"
+  measurementId: "G-3YECXTSHJW",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-export const auth = getAuth()
+export const auth = getAuth();

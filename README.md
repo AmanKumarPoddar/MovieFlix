@@ -42,6 +42,15 @@ Project Name : movieflix
 -GPT Search Bar
 -Multi language feature in our app
 -Integrate GPT APIs(Get openAI key)
+-GPT Search OPEN_AI API key
+-GPT Search API call
+
+-Fetched GPT movie suggestions from TMDB
+-created GPT slice and added data  over there 
+-Reused movie list component to make movie suggestion container
+-Adding .env file and  adding .env file to gitignore
+-Momoization
+-Made our site responsive 
 
 # Features:
 
