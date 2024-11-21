@@ -45,5 +45,6 @@
     "@reduxjs/toolkit": "^2.3.0",
     "react-router-dom": "^6.26.1",
     "tailwindcss": "^3.4.10"
-  }
+  },
+  "homepage": "https://myusername.github.io/my-app"
 }
